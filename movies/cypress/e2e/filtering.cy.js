@@ -40,8 +40,8 @@ describe("Filtering", () => {
   });
   describe("By movie genre", () => {
     it("show movies with the selected genre", () => {
-      const selectedGenreId = 35;
-      const selectedGenreText = "Comedy";
+      const selectedGenreId = 18;
+      const selectedGenreText = "Drama";
       const matchingMovies = filterByGenre(movies, selectedGenreId);
       cy.get("#genre-select").click();
       cy.get("li").contains(selectedGenreText).click();
@@ -56,5 +56,24 @@ describe("Filtering", () => {
   });
   describe("Combined genre and title", () => {
     // TODO
+    it("show movies with the selected genre and display movies with 'm' in the title", () => {
+        const selectedGenreId = 18;
+        const selectedGenreText = "Drama";
+        const matchingMoviesByGenre = filterByGenre(movies, selectedGenreId);
+        const searchString = "m";
+        const matchingMoviesByTitle = filterByTitle(movies, searchString);
+        const matchingMovies = matchingMoviesByGenre.filter(moviesByTitle => matchingMoviesByTitle.some(moviesByGenre => moviesByTitle.id === moviesByGenre.id))
+        // const matchingMovies = matchingMoviesByGenre.filter(t => filterByTitle.include(t))
+        cy.get("#genre-select").click();
+        cy.get("li").contains(selectedGenreText).click();
+        cy.get("#filled-search").clear().type(searchString); // Enter m in text box
+        cy.get(".MuiCardHeader-content").should(
+            "have.length",
+            matchingMovies.length
+        );
+        cy.get(".MuiCardHeader-content").each(($card, index) => {
+            cy.wrap($card).find("p").contains(matchingMovies[index].title);
+        });
+    });
   });
 });
