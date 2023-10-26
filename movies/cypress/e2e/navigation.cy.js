@@ -56,7 +56,7 @@ describe("Navigation", () => {
       cy.get("button[aria-label='add to favorites']").eq(3).click();
       cy.get("button").contains("Favorites").click();
     });
-    it("navigates between the movies detail page and the Home page.", () => {
+    it("navigates between the movies detail page and the Favorite page.", () => {
       cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
 
       cy.get("svg[data-testid='ArrowBackIcon'").click();
