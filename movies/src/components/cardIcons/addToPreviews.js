@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
 import IconButton from "@mui/material/IconButton";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlayIcon from "@mui/icons-material/PlayArrow"
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd"
 
 const AddToPreviewsIcon = ({ movie }) => {
   const context = useContext(MoviesContext);
@@ -14,7 +14,7 @@ const AddToPreviewsIcon = ({ movie }) => {
 
   return (
     <IconButton aria-label="add previews" onClick={handleAddToPreviews}>
-      <PlayIcon color="primary" fontSize="large" />
+      <PlaylistAddIcon color="primary" fontSize="large" />
     </IconButton>
   );
 };
