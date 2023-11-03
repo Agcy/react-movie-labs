@@ -1,30 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { getUpcomingMovie } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage'
+import AddToPreviewsIcon from '../components/cardIcons/addToPreviews'
+import { useQuery } from 'react-query';
+import Spinner from '../components/spinner';
 
 const UpcomingMoviePage = (props) => {
-  const [movies, setMovies] = useState([]);
-  const favorites = movies.filter(m => m.favorite)
+  const {  data, error, isLoading, isError }  = useQuery('upcoming', getUpcomingMovie)
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>
+  }  
+  const movies = data.results;
+  const favorites = movies.filter(m => m.upcoming)
   localStorage.setItem('favorites', JSON.stringify(favorites))
 
-  const addToFavorites = (movieId) => {
-    const updatedMovies = movies.map((m) =>
-      m.id === movieId ? { ...m, favorite: true } : m
-    );
-    setMovies(updatedMovies);
-  };
-
-  useEffect(() => {
-    getUpcomingMovie().then(movies => {
-      setMovies(movies);
-    });
-  }, []);
+  // Redundant, but necessary to avoid app crashing.
+  // const addToFavorites = (movieId) => true
 
   return (
     <PageTemplate
       title='Upcoming Movies'
       movies={movies}
-      selectFavorite={addToFavorites}
+      action={(movie) => {
+        return <AddToPreviewsIcon movie={movie} />
+      }}
     />
   );
 };
